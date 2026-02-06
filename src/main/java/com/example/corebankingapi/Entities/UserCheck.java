@@ -20,23 +20,26 @@ public class UserCheck {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank // Имя
     @Size(min = 3, max = 16, message = "Название счёта должно содержать от 3 до 16 символов")
     private String name;
 
-    @NotNull
+    @NotNull // Валюта
     @Enumerated(EnumType.STRING)
     //@Pattern(regexp = "RUB|USD|EUR|CNY|KZT|CUP|CAD|PLN|VND|BRL")
     private Currencies currencies;
 
-    @Min(0)
+    @Min(0) // Балагнс
     private BigDecimal balance;
 
-    @ManyToOne
+    @ManyToOne // Владелец счёта
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "check", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "check", cascade = CascadeType.ALL) // Список транзакций, как для отправителя
     private List<Transaction> transactions;
+
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL) // Список транзакций, как для получателя
+    private List<UserCheck> checks;
 
 }

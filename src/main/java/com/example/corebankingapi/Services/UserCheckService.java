@@ -2,13 +2,16 @@ package com.example.corebankingapi.Services;
 
 import com.example.corebankingapi.Entities.User;
 import com.example.corebankingapi.Entities.UserCheck;
+import com.example.corebankingapi.Errors.EntityNotFoundException;
 import com.example.corebankingapi.Repositories.TransactionRepository;
 import com.example.corebankingapi.Repositories.UserCheckRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class UserCheckService {
 
@@ -22,19 +25,39 @@ public class UserCheckService {
 
     @Transactional
     public void createUserCheck(User user, UserCheck userCheck) {
-        user.getChecks().add(userCheck);
-        userCheck.setUser(user);
-        userCheckRepository.save(userCheck);
+        log.info("Попытка создания счёта: {}", userCheck);
+
+        try {
+            user.getChecks().add(userCheck);
+            userCheck.setUser(user);
+            userCheckRepository.save(userCheck);
+
+            log.info("Счёт успешно создан: {}", userCheck);
+        } catch (Exception e) {
+            log.error("Счёт не был создан: {}", e.getMessage());
+            throw e;
+        }
+
+
     }
 
     @Transactional
     public boolean deleteUserCheck(Long id) {
-        if (userCheckRepository.existsById(id)) {
-            userCheckRepository.deleteById(id);
-            return true;
+        log.info("Попытка удаления счёта: {}", userCheckRepository.findByUserId(id));
 
-        } else {
-            return false;
+        try {
+            if (userCheckRepository.existsById(id)) {
+                userCheckRepository.deleteById(id);
+
+                log.info("Счёт успешно удалён: {}", userCheckRepository.findByUserId(id));
+                return true;
+            } else {
+                log.error("Счёт не был удалён, т.к. его не существует: {}", id);
+                throw new EntityNotFoundException("Счёт не был удалён, т.к. его не существует: " + id);
+            }
+        } catch (Exception e) {
+            log.error("Счёт не был удалён: {}", e.getMessage());
+            throw e;
         }
     }
 

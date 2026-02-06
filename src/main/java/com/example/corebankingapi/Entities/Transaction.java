@@ -21,8 +21,12 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull // Получатель
+    @NotNull // Получатель (id)
     private Long recipientCheckId;
+
+    @ManyToOne // Получатель
+    @JoinColumn(name = "transaction_id")
+    private UserCheck transaction;
 
     @NotNull // Время
     private LocalDateTime dateTime = LocalDateTime.now();
