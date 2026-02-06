@@ -76,7 +76,8 @@ public class UserCheckService {
                 userCheck.getId(),
                 userCheck.getName(),
                 userCheck.getCurrencies(),
-                userCheck.getBalance()
+                userCheck.getBalance(),
+                userCheck.getUser().getId()
         );
     }
 
