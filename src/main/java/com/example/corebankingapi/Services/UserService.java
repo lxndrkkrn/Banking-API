@@ -33,6 +33,13 @@ public class UserService {
         )).collect(Collectors.toList());
     }
 
+    private User mapUserResponseToUser(UserResponse userDTO) {
+        User user = new User();
+        user.setName(userDTO.name());
+        user.setName(userDTO.name());
+        return user;
+    }
+
     @Transactional
     public void createUser(User user) {
         log.info("Попытка создания пользователя: {}", user);
@@ -40,7 +47,7 @@ public class UserService {
         try {
             userRepository.save(user);
 
-            log.info("Счёт успешно создан: {}", user);
+            log.info("Пользователь успешно создан: {}", user);
 
         } catch (Exception e) {
             log.error("Ошибка при создании пользователя: {}", user);

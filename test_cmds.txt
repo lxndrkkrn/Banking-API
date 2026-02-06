@@ -1,0 +1,5 @@
+Invoke-RestMethod -Uri http://localhost:8080/api/v1/users -Method Post -ContentType "application/json" -Body '{"name":"AlexandrI", "password":"1760690SANYA!?"}'
+Invoke-RestMethod -Uri http://localhost:8080/api/v1/users -Method Post -ContentType "application/json" -Body '{"name":"AlexandrII", "password":"1760690SANYA!?"}'
+Invoke-RestMethod -Uri http://localhost:8080/api/v1/users/1/checks -Method Post -ContentType "application/json" -Body '{"name":"chek alexandra 1", "currencies":"USD"}'
+Invoke-RestMethod -Uri http://localhost:8080/api/v1/users/2/checks -Method Post -ContentType "application/json" -Body '{"name":"chek alexandra 2", "currencies":"USD"}'
+Invoke-RestMethod -Uri http://localhost:8080/api/v1/transactions/send -Method Post -ContentType "application/json" -Body '{"senderCheckId":"1", "recipientCheckId":"2", "transactionType":"Payments", "currencies":"USD", "amount":"100", "description":"gift", "localDateTime":"2024-10-15T13:45:30"}'

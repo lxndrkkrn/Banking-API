@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,7 @@ public class UserCheck {
     private Currencies currencies;
 
     @Min(0) // Балагнс
-    private BigDecimal balance;
+    private BigDecimal balance = new BigDecimal(BigInteger.ZERO);
 
     @ManyToOne // Владелец счёта
     @JoinColumn(name = "user_id")

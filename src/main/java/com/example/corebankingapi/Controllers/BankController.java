@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class BankController {
         this.transactionService = transactionService;
     }
 
+
     @PostMapping("/users") //Создать пользователя
     public void createUser(@Valid @RequestBody User user) {
         userService.createUser(user);
@@ -51,6 +53,11 @@ public class BankController {
     public void createCheck(@Valid @RequestBody UserCheck userCheck, @PathVariable Long id) {
         User user = userService.findById(id);
         userCheckService.createUserCheck(user, userCheck);
+    }
+
+    @GetMapping("/setBalance/{id}/{balance}")
+    public void setBalance(@PathVariable Long id, @PathVariable("balance") BigDecimal bigDecimal) {
+        userCheckService.setBalance(id, bigDecimal);
     }
 
     @DeleteMapping("/users/{id}/checks/{checkId}") //Удалить счёт пользователя (по id пользователя и счёта)
@@ -73,7 +80,7 @@ public class BankController {
         return ResponseEntity.ok(history);
     }
 
-    @PostMapping("/transactions/send")
+    @PostMapping("/transactions/send") // Создать транзакцию (отправить деньги)
     public void sendMoney(@RequestBody TransferRequest transferRequest) {
         UserCheck fromCheck = userCheckService.findById(transferRequest.senderCheckId());
         UserCheck toCheck = userCheckService.findById(transferRequest.senderCheckId());
@@ -81,17 +88,17 @@ public class BankController {
         transactionService.createTransaction(transferRequest, fromCheck, toCheck);
     }
 
-    @GetMapping("/info/users/{id}")
+    @GetMapping("/info/users/{id}") // Получить ограниченную информацию о пользователе
     public UserResponse findUserInfo(@PathVariable Long id) {
         return userService.getInfoUser(id);
     }
 
-    @GetMapping("/info/checks/{id}")
+    @GetMapping("/info/checks/{id}") // Получить ограниченную информацию о счёте
     public UserCheckResponse findCheckInfo(@PathVariable Long id) {
         return userCheckService.getInfoCheck(id);
     }
 
-    @GetMapping("/info/transactions/{id}")
+    @GetMapping("/info/transactions/{id}") // Получить ограниченную информацию о транзакции
     public TransactionsResponse findTransactionInfo(@PathVariable Long id) {
         return transactionService.getInfoTransaction(id);
     }

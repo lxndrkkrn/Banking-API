@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -24,6 +25,21 @@ public class UserCheckService {
         //this.transactionRepository = transactionRepository;
     }
 
+    private UserCheck mapCheckResponseToCheck(UserCheckResponse userCheckResponse) {
+        UserCheck userCheck = new UserCheck();
+        userCheck.setBalance(BigDecimal.ZERO);
+        userCheck.setName(userCheckResponse.name());
+        userCheck.setCurrencies(userCheckResponse.currencies());
+        return userCheck;
+    }
+
+    @Transactional
+    public void setBalance(Long id, BigDecimal bigDecimal) {
+        UserCheck userCheck = findById(id);
+        userCheck.setBalance(bigDecimal);
+        System.out.println("Money added");
+    }
+
     @Transactional
     public void createUserCheck(User user, UserCheck userCheck) {
         log.info("Попытка создания счёта: {}", userCheck);
@@ -31,6 +47,8 @@ public class UserCheckService {
         try {
             user.getChecks().add(userCheck);
             userCheck.setUser(user);
+            userCheck.setBalance(BigDecimal.ZERO);
+
             userCheckRepository.save(userCheck);
 
             log.info("Счёт успешно создан: {}", userCheck);

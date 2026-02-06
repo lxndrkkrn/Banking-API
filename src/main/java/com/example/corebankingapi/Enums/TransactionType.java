@@ -6,5 +6,5 @@ public enum TransactionType {
     WithdrawingMoney,
     DepositMoney,
     ForeignExchangeTransactions,
-    LoanRepayment
+    LoanRepayment,
 }
