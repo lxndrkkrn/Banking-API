@@ -36,10 +36,12 @@ public class UserCheck {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "check", cascade = CascadeType.ALL) // Список транзакций, как для отправителя
-    private List<Transaction> transactions;
+    // Транзакции, где этот счет — ОТПРАВИТЕЛЬ
+    @OneToMany(mappedBy = "check", cascade = CascadeType.ALL)
+    private List<Transaction> outgoingTransactions;
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL) // Список транзакций, как для получателя
-    private List<UserCheck> checks;
+    // Транзакции, где этот счет — ПОЛУЧАТЕЛЬ
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    private List<Transaction> incomingTransactions; // Исправлен тип на List<Transaction>
 
 }

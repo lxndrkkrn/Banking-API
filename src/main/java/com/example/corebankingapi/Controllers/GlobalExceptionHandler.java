@@ -3,12 +3,16 @@ package com.example.corebankingapi.Controllers;
 import com.example.corebankingapi.Errors.EntityNotFoundException;
 import com.example.corebankingapi.Errors.InsufficientFundsException;
 import com.example.corebankingapi.Records.ErrorResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
 
+@ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientFundsException.class)
@@ -19,6 +23,7 @@ public class GlobalExceptionHandler {
                 "Funds Error",
                 ex.getMessage()
         );
+        log.warn("Ошибка транзакции: {}; Сообщение: {}", error.error(), ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -30,6 +35,7 @@ public class GlobalExceptionHandler {
                 "Not Found",
                 ex.getMessage()
         );
+        log.warn("Ошибка пользователя: {}; Сообщение: {}", error.error(), ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
@@ -41,6 +47,7 @@ public class GlobalExceptionHandler {
                 "Server Error",
                 ex.getMessage()
         );
+        log.error("Критическая ошибка сервера: {}; Сообщение: {}", error.error(), ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

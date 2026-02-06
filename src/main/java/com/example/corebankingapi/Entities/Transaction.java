@@ -24,10 +24,6 @@ public class Transaction {
     @NotNull // Получатель (id)
     private Long recipientCheckId;
 
-    @ManyToOne // Получатель
-    @JoinColumn(name = "transaction_id")
-    private UserCheck transaction;
-
     @NotNull // Время
     private LocalDateTime dateTime = LocalDateTime.now();
 
@@ -45,8 +41,12 @@ public class Transaction {
     @NotNull
     private String description;
 
-    @ManyToOne // Сендер
+    @ManyToOne // Отправитель
     @JoinColumn(name = "check_id")
     private UserCheck check;
+
+    @ManyToOne // Получатель
+    @JoinColumn(name = "transaction_id")
+    private UserCheck transaction;
 
 }
