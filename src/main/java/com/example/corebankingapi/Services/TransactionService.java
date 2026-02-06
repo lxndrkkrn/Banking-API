@@ -67,6 +67,8 @@ public class TransactionService {
             tx.setCheck(fromCheck);
             tx.setTransaction(toCheck);
             tx.setAmount(transferRequest.amount());
+            tx.setCurrencies(transferRequest.currencies()); // Поле из ошибки №1
+            tx.setRecipientCheckId(transferRequest.recipientCheckId()); // Поле из ошибки №2
             tx.setTransactionType(TransactionType.Translation);
             tx.setDateTime(LocalDateTime.now());
             tx.setTransactionType(transferRequest.transactionType());

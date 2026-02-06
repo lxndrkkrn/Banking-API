@@ -72,7 +72,7 @@ public class BankController {
     @GetMapping("/users/{id}/checks/{checkId}/history") //Получить историю по дате/без даты
     public ResponseEntity<List<Transaction>> getHistory(@PathVariable Long id, @PathVariable Long checkId, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime localDateTime) {
         UserCheck userCheck = userCheckService.findById(checkId);
-        if (userCheck.getUser().getId().equals(id)) {
+        if (!userCheck.getUser().getId().equals(id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -83,7 +83,8 @@ public class BankController {
     @PostMapping("/transactions/send") // Создать транзакцию (отправить деньги)
     public void sendMoney(@RequestBody TransferRequest transferRequest) {
         UserCheck fromCheck = userCheckService.findById(transferRequest.senderCheckId());
-        UserCheck toCheck = userCheckService.findById(transferRequest.senderCheckId());
+        UserCheck toCheck = userCheckService.findById(transferRequest.recipientCheckId());
+        //BigDecimal amount = transferRequest.amount();
 
         transactionService.createTransaction(transferRequest, fromCheck, toCheck);
     }
