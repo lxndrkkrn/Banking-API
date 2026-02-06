@@ -1,5 +1,8 @@
 package com.example.corebankingapi.Controllers;
 
+import com.example.corebankingapi.DTO.TransactionsResponse;
+import com.example.corebankingapi.DTO.UserCheckResponse;
+import com.example.corebankingapi.DTO.UserResponse;
 import com.example.corebankingapi.Entities.Transaction;
 
 import com.example.corebankingapi.Entities.User;
@@ -76,6 +79,21 @@ public class BankController {
         UserCheck toCheck = userCheckService.findById(transferRequest.senderCheckId());
 
         transactionService.createTransaction(transferRequest, fromCheck, toCheck);
+    }
+
+    @GetMapping("/info/users/{id}")
+    public UserResponse findUserInfo(@PathVariable Long id) {
+        return userService.getInfoUser(id);
+    }
+
+    @GetMapping("/info/checks/{id}")
+    public UserCheckResponse findCheckInfo(@PathVariable Long id) {
+        return userCheckService.getInfoCheck(id);
+    }
+
+    @GetMapping("/info/transactions/{id}")
+    public TransactionsResponse findTransactionInfo(@PathVariable Long id) {
+        return transactionService.getInfoTransaction(id);
     }
 
 }

@@ -9,7 +9,6 @@ import com.example.corebankingapi.Repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.stream.Stream;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,7 +70,7 @@ public class UserService {
     }
 
     public UserResponse getInfoUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("пользователь с ID: " + id + " не найден"));
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Пользователь с ID: " + id + " не найден"));
         List<UserCheckResponse> checksDTO = mapChecksToResponse(user.getChecks());
 
         return new UserResponse(
