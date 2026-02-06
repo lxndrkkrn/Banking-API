@@ -1,11 +1,18 @@
 package com.example.corebankingapi.Services;
 
+import com.example.corebankingapi.DTO.UserCheckResponse;
+import com.example.corebankingapi.DTO.UserResponse;
 import com.example.corebankingapi.Entities.User;
+import com.example.corebankingapi.Entities.UserCheck;
 import com.example.corebankingapi.Errors.EntityNotFoundException;
 import com.example.corebankingapi.Repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import java.util.stream.Stream;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -15,6 +22,16 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    private List<UserCheckResponse> mapChecksToResponse(List<UserCheck> userChecks) {
+        return userChecks.stream().map(check -> new UserCheckResponse(
+                check.getId(),
+                check.getName(),
+                check.getCurrencies(),
+                check.getBalance(),
+                check.getUser().getId()
+        )).collect(Collectors.toList());
     }
 
     @Transactional
@@ -51,6 +68,17 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+    }
+
+    public UserResponse getInfoUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("пользователь с ID: " + id + " не найден"));
+        List<UserCheckResponse> checksDTO = mapChecksToResponse(user.getChecks());
+
+        return new UserResponse(
+                user.getId(),
+                user.getName(),
+                checksDTO
+        );
     }
 
 }

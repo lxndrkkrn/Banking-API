@@ -1,8 +1,10 @@
 package com.example.corebankingapi.Services;
 
+import com.example.corebankingapi.DTO.TransactionsResponse;
 import com.example.corebankingapi.Entities.Transaction;
 import com.example.corebankingapi.Entities.UserCheck;
 import com.example.corebankingapi.Enums.TransactionType;
+import com.example.corebankingapi.Errors.EntityNotFoundException;
 import com.example.corebankingapi.Errors.InsufficientFundsException;
 import com.example.corebankingapi.Records.TransferRequest;
 import com.example.corebankingapi.Repositories.TransactionRepository;
@@ -78,6 +80,18 @@ public class TransactionService {
             log.error("Ошибка при создании транзакции: {}", e.getMessage());
             throw e;
         }
+    }
+
+    public TransactionsResponse getInfoTransaction(Long id) {
+        Transaction transaction = transactionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Транзакции с ID: " + id + " не существует"));
+        return new TransactionsResponse(
+                transaction.getId(),
+                transaction.getDateTime(),
+                transaction.getTransactionType(),
+                transaction.getAmount(),
+                transaction.getCurrencies(),
+                transaction.getDescription()
+        );
     }
 
 }

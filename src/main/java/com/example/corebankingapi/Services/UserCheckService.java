@@ -1,5 +1,6 @@
 package com.example.corebankingapi.Services;
 
+import com.example.corebankingapi.DTO.UserCheckResponse;
 import com.example.corebankingapi.Entities.User;
 import com.example.corebankingapi.Entities.UserCheck;
 import com.example.corebankingapi.Errors.EntityNotFoundException;
@@ -43,7 +44,7 @@ public class UserCheckService {
 
     @Transactional
     public boolean deleteUserCheck(Long id) {
-        log.info("Попытка удаления счёта: {}", userCheckRepository.findByUserId(id));
+        log.info("Попытка удаления счёта: {}", userCheckRepository.findById(id));
 
         try {
             if (userCheckRepository.existsById(id)) {
@@ -67,6 +68,16 @@ public class UserCheckService {
 
     public List<UserCheck> findByIdList(Long id) {
         return userCheckRepository.findByUserId(id);
+    }
+
+    public UserCheckResponse getInfoCheck(Long id) {
+        UserCheck userCheck = userCheckRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Счёт с ID: " + id + " не найден"));
+        return new UserCheckResponse(
+                userCheck.getId(),
+                userCheck.getName(),
+                userCheck.getCurrencies(),
+                userCheck.getBalance()
+        );
     }
 
 }
