@@ -37,7 +37,6 @@ public class UserCheckService {
     public void setBalance(Long id, BigDecimal bigDecimal) {
         UserCheck userCheck = findById(id);
         userCheck.setBalance(bigDecimal);
-        System.out.println("Money added");
     }
 
     @Transactional
