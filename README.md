@@ -1,5 +1,5 @@
 # Core Banking API
-Тестовый проект api банка v1.2.2.
+Тестовый проект api банка v1.3.0.
 
 ### Стек:
 - Java 21, Spring Boot 4
