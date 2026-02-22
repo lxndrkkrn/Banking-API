@@ -1,9 +1,9 @@
 # Core Banking API
-Тестовый проект api банка v1.3.0.
+Тестовый проект api банка v1.4.0.
 
 ### Стек:
 - Java 21, Spring Boot 4
-- Spring Data JPA, PostgreSQL
+- Spring Data JPA, PostgreSQL, Spring Security (ALPHA)
 - Lombok, Swagger UI
 
 ### Функционал:
@@ -14,10 +14,10 @@
 - Логирование через `@Slf4j`.
 - Защита баз данных через `DTO`.
 - JUnit тесты.
-- Spring Security (TEST)
 
 ### Нововведения:
-- Добавлена первая версия Spring Security (НЕДОДЕЛАНО).
+- Подключена PostgreSQL
+- Полное подключение к Docker (приложение и база данных)
 
 ### Микроизменения:
 - Нет
