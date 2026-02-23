@@ -1,5 +1,6 @@
 package com.example.corebankingapi.Controllers;
 
+import com.example.corebankingapi.DTO.CreateUserResponse;
 import com.example.corebankingapi.DTO.TransactionsResponse;
 import com.example.corebankingapi.DTO.UserCheckResponse;
 import com.example.corebankingapi.DTO.UserResponse;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,8 +40,8 @@ public class BankController {
 
 
     @PostMapping("/users") //Создать пользователя
-    public void createUser(@Valid @RequestBody User user) {
-        userService.createUser(user);
+    public void createUser(@Valid @RequestBody CreateUserResponse createUserResponse) {
+        userService.createUser(createUserResponse);
     }
 
     @DeleteMapping("/users/{id}") //Удалить пользователя
@@ -55,10 +55,10 @@ public class BankController {
         userCheckService.createUserCheck(user, userCheck);
     }
 
-    @GetMapping("/setBalance/{id}/{balance}")
-    public void setBalance(@PathVariable Long id, @PathVariable("balance") BigDecimal bigDecimal) {
-        userCheckService.setBalance(id, bigDecimal);
-    }
+//    @GetMapping("/setBalance/{id}/{balance}")
+//    public void setBalance(@PathVariable Long id, @PathVariable("balance") BigDecimal bigDecimal) {
+//        userCheckService.setBalance(id, bigDecimal);
+//    }
 
     @DeleteMapping("/users/{id}/checks/{checkId}") //Удалить счёт пользователя (по id пользователя и счёта)
     public ResponseEntity<?> deleteCheck(@PathVariable Long id, @PathVariable Long checkId) {

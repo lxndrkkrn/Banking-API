@@ -6,10 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -24,14 +20,16 @@ public class User {
     private Long id;
 
     @NotBlank
+    @Column(nullable = false)
     @Size(min = 3, max = 16,  message = "Имя должно быть от 3 до 16 символов!")
     private String name;
 
     @NotBlank
+    @Column(nullable = false)
     @Size(min = 6, message = "Пароль должен содержать не менее 6 символов")
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserCheck> checks;
 
 }

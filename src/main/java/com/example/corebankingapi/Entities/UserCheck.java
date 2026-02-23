@@ -22,10 +22,12 @@ public class UserCheck {
     private Long id;
 
     @NotBlank // Имя
+    @Column(nullable = false)
     @Size(min = 3, max = 16, message = "Название счёта должно содержать от 3 до 16 символов")
     private String name;
 
     @NotNull // Валюта
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     //@Pattern(regexp = "RUB|USD|EUR|CNY|KZT|CUP|CAD|PLN|VND|BRL")
     private Currencies currencies;
@@ -38,11 +40,11 @@ public class UserCheck {
     private User user;
 
     // Транзакции, где этот счет — ОТПРАВИТЕЛЬ
-    @OneToMany(mappedBy = "check", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "check", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> outgoingTransactions;
 
     // Транзакции, где этот счет — ПОЛУЧАТЕЛЬ
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> incomingTransactions; // Исправлен тип на List<Transaction>
 
 }

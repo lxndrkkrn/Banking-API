@@ -1,11 +1,13 @@
 package com.example.corebankingapi.Controllers;
 
+import com.example.corebankingapi.Errors.EmptyValueException;
 import com.example.corebankingapi.Errors.EntityNotFoundException;
 import com.example.corebankingapi.Errors.InsufficientFundsException;
 import com.example.corebankingapi.Records.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -39,6 +41,37 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(EmptyValueException.class)
+    public ResponseEntity<ErrorResponse> handleEmptyValue(EmptyValueException ex) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                "Empty Value",
+                ex.getMessage()
+        );
+        log.warn("Ошибка пользователя: {}; Сообщение: {}", error.error(), ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult()
+                .getFieldErrors()
+                .getFirst()
+                .getDefaultMessage();
+
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                errorMessage,
+                ex.getMessage()
+        );
+        log.warn("Ошибка пользователя: {}; Сообщение: {}", error.error(), errorMessage);
+        return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         ErrorResponse error = new ErrorResponse(
@@ -50,5 +83,4 @@ public class GlobalExceptionHandler {
         log.error("Критическая ошибка сервера: {}; Сообщение: {}", error.error(), ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 }

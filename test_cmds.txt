@@ -3,3 +3,18 @@ Invoke-RestMethod -Uri http://localhost:8080/api/v1/users -Method Post -ContentT
 Invoke-RestMethod -Uri http://localhost:8080/api/v1/users/1/checks -Method Post -ContentType "application/json" -Body '{"name":"chek alexandra 1", "currencies":"USD"}'
 Invoke-RestMethod -Uri http://localhost:8080/api/v1/users/2/checks -Method Post -ContentType "application/json" -Body '{"name":"chek alexandra 2", "currencies":"USD"}'
 Invoke-RestMethod -Uri http://localhost:8080/api/v1/transactions/send -Method Post -ContentType "application/json" -Body '{"senderCheckId":"1", "recipientCheckId":"2", "transactionType":"Payments", "currencies":"USD", "amount":"100", "description":"gift", "localDateTime":"2024-10-15T13:45:30"}'
+
+SELECT * FROM "db name";
+
+INSERT INTO users (name, password, balance)
+VALUES ('AlexandrII', '1760690SANYA!?', 0.0);
+
+SELECT * FROM db_name WHERE условие = ?;
+
+UPDATE db_name
+SET значение = ?
+WHERE условие = ?;
+
+DELETE FROM db_name WHERE id = 1; Удалить по id
+
+TRUNCATE TABLE users RESTART IDENTITY CASCADE; Очистить всё

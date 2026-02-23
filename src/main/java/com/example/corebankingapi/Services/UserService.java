@@ -1,5 +1,6 @@
 package com.example.corebankingapi.Services;
 
+import com.example.corebankingapi.DTO.CreateUserResponse;
 import com.example.corebankingapi.DTO.UserCheckResponse;
 import com.example.corebankingapi.DTO.UserResponse;
 import com.example.corebankingapi.Entities.User;
@@ -41,16 +42,20 @@ public class UserService {
     }
 
     @Transactional
-    public void createUser(User user) {
-        log.info("Попытка создания пользователя: {}", user);
+    public void createUser(CreateUserResponse createUserResponse) {
+        log.info("Попытка создания пользователя: {}", createUserResponse);
 
         try {
+            User user = new User();
+            user.setName(createUserResponse.name());
+            user.setPassword(createUserResponse.password());
+
             userRepository.save(user);
 
             log.info("Пользователь успешно создан: {}", user);
 
         } catch (Exception e) {
-            log.error("Ошибка при создании пользователя: {}", user);
+            log.error("Ошибка при создании пользователя: {}", createUserResponse);
             throw e;
         }
 

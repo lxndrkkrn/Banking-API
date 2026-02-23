@@ -1,6 +1,5 @@
 package com.example.corebankingapi.DTO;
 
-import com.example.corebankingapi.Entities.User;
 import com.example.corebankingapi.Enums.Currencies;
 
 import java.math.BigDecimal;
